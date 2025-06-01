@@ -1,0 +1,75 @@
+{
+    "$schema": "https://biomejs.dev/schemas/1.9.4/schema.json",
+    "organizeImports": {
+        "enabled": true
+    },
+    "files": {
+        "ignore": ["**/*.js", ".vercel", ".next"]
+    },
+    "linter": {
+        "enabled": true,
+        "rules": {
+            "recommended": true,
+            "style": {
+                "noNonNullAssertion": "off",
+                "useImportType": "error"
+            },
+            "complexity": {
+                "useArrowFunction": "error"
+            },
+            "a11y": {
+                "useSemanticElements": "off",
+                "useAnchorContent": "off",
+                "noSvgWithoutTitle": "off"
+            },
+            "correctness": {
+                "useExhaustiveDependencies": "off",
+                "useHookAtTopLevel": "error",
+                "noUnusedImports": "off"
+            },
+            "suspicious": {
+                "noExplicitAny": "off",
+                "noArrayIndexKey": "off",
+                "noConsoleLog": "warn"
+            },
+            "security": {
+                "noDangerouslySetInnerHtml": "off"
+            },
+            "nursery": {
+                "useSortedClasses": {
+                    "level": "info",
+                    "fix": "safe",
+                    "options": {
+                        "attributes": ["classList"],
+                        "functions": ["cn", "clsx", "tv", "composeRenderProps"]
+                    }
+                }
+            }
+        },
+        "ignore": ["node_modules", ".next", "dist"]
+    },
+    "formatter": {
+        "enabled": true,
+        "indentStyle": "space",
+        "indentWidth": 4,
+        "lineWidth": 120,
+        "ignore": ["node_modules", ".next", "dist"]
+    },
+    "javascript": {
+        "formatter": {
+            "quoteStyle": "single",
+            "arrowParentheses": "always",
+            "bracketSameLine": false,
+            "bracketSpacing": true,
+            "jsxQuoteStyle": "single",
+            "quoteProperties": "asNeeded",
+            "semicolons": "asNeeded",
+            "trailingCommas": "none"
+        }
+    },
+    "json": {
+        "formatter": {
+            "trailingCommas": "none"
+        }
+    }
+}
