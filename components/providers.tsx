@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation'
 import { RouterProvider } from 'react-aria-components'
 
 import { ToastProvider } from '@/components/ui'
+import { SessionProvider } from 'next-auth/react'
 
 declare module 'react-aria-components' {
     interface RouterConfig {
@@ -19,7 +20,7 @@ function Providers({ children }: { children: React.ReactNode }) {
         <RouterProvider navigate={router.push}>
             <ThemeProvider attribute='class'>
                 <ToastProvider />
-                {children}
+                <SessionProvider>{children}</SessionProvider>
             </ThemeProvider>
         </RouterProvider>
     )

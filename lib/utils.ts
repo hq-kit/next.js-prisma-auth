@@ -1,4 +1,5 @@
 import { type ClassValue, clsx } from 'clsx'
+import { createHash } from 'crypto'
 import { twMerge } from 'tailwind-merge'
 
 export const cn = (...inputs: ClassValue[]) => twMerge(clsx(inputs))
@@ -15,3 +16,5 @@ export const fuzzyMatch = (textValue: string, inputValue: string): boolean => {
     }
     return inputIndex === inputValue.length
 }
+
+export const md5 = (contents: string) => createHash('md5').update(contents).digest('hex')
