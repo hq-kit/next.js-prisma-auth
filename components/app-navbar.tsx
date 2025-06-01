@@ -6,9 +6,9 @@ import {
     IconBrandCleon,
     IconChevronDown,
     IconExternalLink,
+    IconGauge,
     IconHome,
     IconInfo,
-    IconLink,
     IconPackage,
     IconPhone,
     IconSwatchBook
@@ -16,42 +16,46 @@ import {
 import { usePathname } from 'next/navigation'
 
 import { ThemeToggle } from '@/components/theme-toggle'
-import { Link, Menu, Navbar, buttonStyle } from '@/components/ui'
+import { Menu, Navbar } from '@/components/ui'
+import type { User } from 'next-auth'
+import { UserMenu } from './user-menu'
 
-export function AppNavbar({ children, ...props }: React.ComponentProps<typeof Navbar>) {
+const navMenu = [
+    { label: 'Home', href: '/', icon: IconHome },
+    { label: 'About', href: '/about', icon: IconInfo },
+    { label: 'Contact', href: '/contact', icon: IconPhone }
+]
+
+const protectedNavMenu = [{ label: 'Dashboard', href: '/dashboard', icon: IconGauge }]
+
+export function AppNavbar({ children, user }: { children: React.ReactNode; user?: User }) {
     const pathname = usePathname()
 
     const [isOpen, setIsOpen] = useState(false)
     useEffect(() => setIsOpen(false), [pathname])
     return (
-        <Navbar isSticky isOpen={isOpen} onOpenChange={setIsOpen} {...props}>
+        <Navbar isSticky isOpen={isOpen} onOpenChange={setIsOpen}>
             <Navbar.Nav>
                 <Navbar.Logo className='text-fg' href='/'>
                     <IconBrandCleon className='size-6' />
                 </Navbar.Logo>
                 <Navbar.Section>
-                    <Navbar.Item isCurrent={pathname === '/'} href='/'>
-                        <IconHome className='inline size-4 lg:hidden' />
-                        Home
-                    </Navbar.Item>
-                    <Navbar.Item isCurrent={pathname === '/about'} href='/about'>
-                        <IconInfo className='inline size-4 lg:hidden' />
-                        About
-                    </Navbar.Item>
-                    <Navbar.Item isCurrent={pathname === '/contact'} href='/contact'>
-                        <IconPhone className='inline size-4 lg:hidden' />
-                        Contact
-                    </Navbar.Item>
-                    <Navbar.Item
-                        target='_blank'
-                        href='https://hq-ui.vercel.app/blocks'
-                        className='text-primary hover:text-primary/90'
-                    >
-                        Blocks
-                        <IconLink />
-                    </Navbar.Item>
+                    {navMenu.map((item) => (
+                        <Navbar.Item key={item.label} isCurrent={pathname === item.href} href={item.href}>
+                            <item.icon />
+                            {item.label}
+                        </Navbar.Item>
+                    ))}
+                    {user &&
+                        protectedNavMenu.map((item) => (
+                            <Navbar.Item key={item.label} isCurrent={pathname === item.href} href={item.href}>
+                                <item.icon />
+                                {item.label}
+                            </Navbar.Item>
+                        ))}
                     <Menu>
                         <Navbar.Item className='group'>
+                            <IconBrandCleon />
                             Resources...
                             <IconChevronDown className='ml-2 size-4 duration-200 group-data-pressed:rotate-180' />
                         </Navbar.Item>
@@ -77,9 +81,7 @@ export function AppNavbar({ children, ...props }: React.ComponentProps<typeof Na
                 <Navbar.Section className='hidden sm:ml-auto lg:flex'>
                     <Navbar.Flex className='gap-1 md:gap-1'>
                         <ThemeToggle variant='outline' />
-                        <Link className={buttonStyle({ variant: 'outline' })} href='/login'>
-                            Login
-                        </Link>
+                        <UserMenu user={user} />
                     </Navbar.Flex>
                 </Navbar.Section>
             </Navbar.Nav>
@@ -90,13 +92,7 @@ export function AppNavbar({ children, ...props }: React.ComponentProps<typeof Na
                 <Navbar.Flex>
                     <Navbar.Flex className='gap-1'>
                         <ThemeToggle variant='outline' />
-                        <Navbar.Item
-                            className={buttonStyle({ variant: 'outline' })}
-                            isCurrent={pathname === '/login'}
-                            href='/login'
-                        >
-                            Login
-                        </Navbar.Item>
+                        <UserMenu user={user} />
                     </Navbar.Flex>
                 </Navbar.Flex>
             </Navbar.Compact>
